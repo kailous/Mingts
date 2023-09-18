@@ -85,10 +85,10 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         if (result) {
             res.json(result);
         } else {
-            res.status(404).json({ 错误: `无法获取${zi}的数据` });
+            res.status(404).json({ Error: `无法获取${zi}的数据` });
         }
     } catch (error) {
         console.error(`获取${zi}数据时出错: ${error}`);
-        res.status(500).json({ 错误: '内部服务器错误' });
+        res.status(500).json({ Error: '内部服务器错误' });
     }
 };

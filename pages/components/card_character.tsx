@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import styles from '../css/card_character.module.css';
 
 interface CardData {
@@ -7,15 +7,13 @@ interface CardData {
     defn: string;
     gow: string[];
 }
+
 interface Pinyin {
     pinyinText: string;
     pinyinLink: string;
 }
 
-const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {
-    if (!data || !data.gifurl) {
-        return null; // or handle the case where content is not defined
-    }
+const CardCharacter = ({data, listenMode}: { data: CardData, listenMode: boolean }) => {
 
     const [isSafari, setIsSafari] = useState(false);
 
@@ -25,13 +23,16 @@ const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boole
         setIsSafari(isSafariBrowser);
     }, []);
 
-    const { gifurl, pinyin, defn, gow } = data;
+    if (!data || !data.gifurl) {
+        return null; // or handle the case where content is not defined
+    }
+
+    const {gifurl, pinyin, defn, gow} = data;
 
     const handlePlayAudio = (audioUrl: string): void => {
         const audio = new Audio(audioUrl);
         audio.play().then();
     };
-
 
 
     return (
