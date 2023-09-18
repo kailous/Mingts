@@ -1,6 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import styles from '../css/card_character.module.css';
 
+interface CardCharacterProps {
+    data: CardData[]; // Replace with the actual type of characterData
+    listenMode: boolean;
+}
 interface CardData {
     gifurl: string;
     pinyin: Pinyin[]; // 这里根据实际情况定义 pinyin 的类型
@@ -12,9 +16,10 @@ interface Pinyin {
     pinyinText: string;
     pinyinLink: string;
 }
-export type { CardData };  // Use 'export type' to re-export the type
 
-const CardCharacter = ({data, listenMode}: { data: CardData, listenMode: boolean }) => {
+export type { CardData };  // Use 'export type' to re-export the type
+const CardCharacter: React.FC<CardCharacterProps> = ({ data, listenMode }) => {
+
 
     const [isSafari, setIsSafari] = useState(false);
 
