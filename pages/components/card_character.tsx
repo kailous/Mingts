@@ -23,10 +23,12 @@ const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boole
 
     const { gifurl, pinyin, defn, gow } = data;
 
-    const handlePlayAudio = (audioUrl) => {
+    const handlePlayAudio = (audioUrl: string) => {
+        // 现在 TypeScript 知道 audioUrl 是字符串类型了
         const audio = new Audio(audioUrl);
         audio.play();
     };
+
 
     return (
         <div className={styles.card}>
@@ -75,6 +77,6 @@ const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boole
             </div>
         </div>
     );
-}
+};
 
 export default CardCharacter;
