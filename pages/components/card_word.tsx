@@ -1,15 +1,21 @@
 import React, {useEffect} from 'react';
 import styles from '../css/card_word.module.css';
 
-const CardWord = ({ data,onListen,listenMode,setListenMode,onListenModeChange }) => {
-    const handleListenModeChange = (mode) => {
-        setListenMode(mode);
-        console.log('word测试listenMode1:', mode);
-    }
+interface CardData {
+    content: string;
+    pinyin: any[]; // 这里根据实际情况定义 pinyin 的类型
+    defn: string;
+}
+
+const CardWord = ({ data, onListen, listenMode, setListenMode, onListenModeChange }: { data: CardData, onListen: Function, listenMode: boolean, setListenMode: Function, onListenModeChange: Function }) => {    // @ts-ignore
+    // const handleListenModeChange = (mode) => {
+    //     setListenMode(mode);
+    //     console.log('word测试listenMode1:', mode);
+    // }
     // 测试listenMode传递
-    useEffect(() => {
-        console.log('word测试listenMode2:', listenMode);
-    }, [listenMode]);
+    // useEffect(() => {
+    //     console.log('word测试listenMode2:', listenMode);
+    // }, [listenMode]);
 
     const { content, pinyin, defn } = data;
 
@@ -45,6 +51,6 @@ const CardWord = ({ data,onListen,listenMode,setListenMode,onListenModeChange })
             </div>
         </div>
     );
-}
+};
 
 export default CardWord;
