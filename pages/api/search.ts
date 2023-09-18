@@ -21,7 +21,7 @@ async function getHanzBishun(searchWords: string[]) {
             const pinyinDiv = $('#pinyin');
             const pinyinList = pinyinDiv.find('span').toArray().map((spanElement) => {
                 const span = $(spanElement);
-                const pinyin = span.text().trim().replace(/\[|\]/g, ''); // 删除 '[' 和 ']'
+                const pinyin = span.text().trim().replace(/[\[\]]/g, ''); // 删除 '[' 和 ']'
                 const pinyinLink = span.find('a').attr('url');
                 return { pinyin, pinyinLink };
             });
@@ -44,12 +44,17 @@ async function getHanzBishun(searchWords: string[]) {
             const type = searchWord.length === 1 ? 'character' : 'word';
 
             const entry = {
-                content: searchWord,
-                type: type,
-                gifurl: gifUrl,
-                pinyin: pinyinList.map(item => ({ pinyinText: item.pinyin.trim(), pinyinLink: item.pinyinLink.trim() })), // 修改pinyin的格式
-                defn: meanings,
-                gow: linkTerms
+                content: searchWord || '没有收录', // Return empty string if searchWord is empty
+                type: type || 'unknown', // Return empty string if type is empty
+                gifurl: gifUrl || './dictation_bihua.png', // Return empty string if gifUrl is empty
+                pinyin: (pinyinList && pinyinList.length > 0)
+                    ? pinyinList.map(item => ({
+                        pinyinText: (item && item.pinyin) ? item.pinyin.trim() : 'none',
+                        pinyinLink: (item && item.pinyinLink) ? item.pinyinLink.trim() : 'none'
+                    }))
+                    : [{ pinyinText: 'none', pinyinLink: 'none' }],
+                defn: meanings || '发现了未知事物，还没有被收录呢。', // Return empty string if meanings is empty
+                gow: linkTerms || ['找不到合适的词组'] // Return an empty array if linkTerms is empty
             };
 
             results[type].push(entry);

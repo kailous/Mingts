@@ -2,7 +2,7 @@ div.header {
     display: flex;
     /*width: 667px;*/
     max-width: var(--max-width);
-    padding: 40px 20px 0px 20px;
+    padding: 40px 20px 0 20px;
     flex-direction: column;
     align-items: flex-start;
     gap: 40px;
@@ -20,6 +20,7 @@ div.header svg {
     background: none;
     border: none;
     resize: none;
+    font-size: 14px;
 }
 .header textarea:focus {
     outline: none;

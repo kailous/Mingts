@@ -19,7 +19,7 @@ div.bihua {
     align-self: stretch;
     background: var(--pinyin-bg-color);
 }
-div.bihua div.img {
+div.bihua div.img,div.bihua div.safari_img {
     width: 230px;
     height: 230px;
     padding: 2px; /* 创建 2px 的内边距 */
@@ -65,7 +65,6 @@ ul.pinyin button p {
     color: var(--text-color);
 
     /* --pinyin-text */
-    font-family: SF Pro Text;
     font-size: 18px;
     font-style: normal;
     font-weight: 600;
@@ -96,7 +95,6 @@ div.info p.shiyi {
     text-overflow: ellipsis;
 
     /* --shiyi-text/桌面端 */
-    font-family: SF Pro Text;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -122,7 +120,6 @@ div.info ul li {
     color: var(--text-color);
 
     /* --zuci-button-text/移动端 */
-    font-family: SF Pro Text;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -152,5 +149,9 @@ div.info ul li {
     div.bihua div.img {
     background-color: var(--pinyin-img-bg-color);
     background-blend-mode: soft-light, normal;
+    }
+    div.bihua div.safari_img {
+        background-color: var(--pinyin-img-bg-color-2);
+        background-blend-mode: soft-light, normal;
     }
 }

@@ -12,7 +12,6 @@ div.maincharacter {
 }
 div.maincharacter h1 {
     color: var(--text-color, #000);
-    font-family: SF Pro Text;
     font-size: 24px;
     font-style: normal;
     font-weight: 600;

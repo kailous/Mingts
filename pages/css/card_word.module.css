@@ -12,7 +12,6 @@ div.card {
 }
 div.card h1 {
     color: var(--text-color, #000);
-    font-family: SF Pro Text;
     font-size: 32px;
     font-style: normal;
     font-weight: 600;
@@ -33,7 +32,6 @@ div.info div.pinyin {
 }
 div.info div.pinyin h2 {
     color: var(--text-color, #000);
-    font-family: SF Pro Text;
     font-size: 14px;
     font-style: normal;
     font-weight: 600;
@@ -53,7 +51,6 @@ div.info p {
     overflow: hidden;
     color: var(--text-color, #000);
     text-overflow: ellipsis;
-    font-family: SF Pro Text;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;

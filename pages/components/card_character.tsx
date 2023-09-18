@@ -1,11 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from '../css/card_character.module.css';
 
-const CardCharacter = ({ data,characterData,onListen,listenMode,setListenMode,onListenModeChange }) => {
-    const handleListenModeChange = (mode) => {
-        setListenMode(mode);
-        console.log('main_character测试listenMode:', mode);
-    }
+const CardCharacter = ({ data,listenMode }) => {
+    const [isSafari, setIsSafari] = useState(false);
+
+    useEffect(() => {
+        // 检测是否为 Safari 浏览器
+        const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+        setIsSafari(isSafariBrowser);
+    }, []);
+    // const handleListenModeChange = (mode) => {
+    //     setListenMode(mode);
+    //     console.log('main_character测试listenMode:', mode);
+    // }
 
     const { gifurl, pinyin, defn, gow } = data;
 
@@ -18,7 +25,7 @@ const CardCharacter = ({ data,characterData,onListen,listenMode,setListenMode,on
         <div className={styles.card}>
             <div className={styles.bihua}>
                 <div
-                    className={styles.img}
+                    className={isSafari ? styles.safari_img : styles.img}
                     style={{
                         backgroundImage: listenMode ? 'url(./dictation_bihua.png)' : `url(${gifurl})`,
                     }}
