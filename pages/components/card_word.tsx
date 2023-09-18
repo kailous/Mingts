@@ -54,3 +54,4 @@ const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean })
 };
 
 export default CardWord;
+export { CardData };

@@ -1,19 +1,11 @@
 import React from 'react';
 import styles from '../css/main_word.module.css';
-import CardWord from './card_word';
+import CardWord, { CardData } from './card_word';
 interface MainWordProps {
-    wordData: CardWordData[]; // Replace with the actual type of characterData
+    wordData: CardData[]; // Replace with the actual type of characterData
     listenMode: boolean;
 }
-interface CardWordData {
-    content: string;
-    pinyin: Pinyin[]; // 这里根据实际情况定义 pinyin 的类型
-    defn: string;
-}
-interface Pinyin {
-    pinyinText: string;
-    pinyinLink: string;
-}
+
 const MainWord: React.FC<MainWordProps> = ({ wordData, listenMode }) => {
 
     return (

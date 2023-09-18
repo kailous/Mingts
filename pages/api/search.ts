@@ -6,7 +6,7 @@ import cheerio from 'cheerio';
 // 先定义好数据的类型结构
 interface Entry {
     content: string;
-    type: string;
+
     gifurl: string;
     pinyin: { pinyinText: string; pinyinLink: string }[];
     defn: string;
@@ -54,7 +54,6 @@ async function getHanzBishun(searchWords: string[]) {
             const type = searchWord.length === 1 ? 'character' : 'word';
             const entry: Entry = {
                 content: searchWord || '没有收录',
-                type: type,
                 gifurl: gifUrl || './dictation_bihua.png',
                 pinyin: (pinyinList && pinyinList.length > 0)
                     ? pinyinList.map(item => ({
