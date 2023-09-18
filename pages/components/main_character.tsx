@@ -3,7 +3,7 @@ import styles from '../css/main_character.module.css';
 import CardCharacter, { CharacterData } from './card_character';
 
 interface MainCharacterProps {
-    characterData: CharacterData[]; // Assuming characterData is an array of CharacterData
+    characterData: CharacterData[] | undefined; // Update type to allow undefined
     listenMode: boolean;
 }
 
@@ -15,7 +15,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, listenMode
                 {characterData && characterData.length === 0 ? (
                     <p>没有需要学习的生字呢～</p>
                 ) : (
-                    characterData.map((character, index) => (
+                    characterData?.map((character, index) => (
                         <CardCharacter
                             key={index}
                             data={character}

@@ -3,7 +3,7 @@ import styles from '../css/main_word.module.css';
 import CardWord, { CardWordData } from './card_word';
 
 interface MainWordProps {
-    wordData: CardWordData[]; // Assuming wordData is an array of CardWordData
+    wordData: CardWordData[] | undefined; // Update type to allow undefined
     listenMode: boolean;
 }
 
@@ -15,7 +15,7 @@ const MainWord: React.FC<MainWordProps> = ({ wordData, listenMode }) => {
                 {wordData && wordData.length === 0 ? (
                     <p>没有需要学习的单词哦～</p>
                 ) : (
-                    wordData.map((word, index) => (
+                    wordData?.map((word, index) => (
                         <CardWord
                             key={index}
                             data={word}
