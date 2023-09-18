@@ -85,3 +85,4 @@ const CardCharacter = ({data, listenMode}: { data: CardData, listenMode: boolean
 };
 
 export default CardCharacter;
+export { CardData };
