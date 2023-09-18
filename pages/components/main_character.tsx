@@ -2,7 +2,7 @@ import React, {useEffect} from 'react';
 import styles from '../css/main_character.module.css';
 import CardCharacter from './card_character';
 interface MainCharacterProps {
-    characterData: YourCharacterDataType; // Replace with the actual type of characterData
+    characterData: any[]; // Replace with the actual type of characterData
     onListen: Function;
     listenMode: boolean;
     setListenMode: Function;
