@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styles from '../css/card_character.module.css';
 
-const CardCharacter = ({ data,listenMode }) => {
+interface CardData {
+    gifurl: string;
+    pinyin: any[]; // 这里根据实际情况定义 pinyin 的类型
+    defn: string;
+    gow: string[];
+}
+
+const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {
     const [isSafari, setIsSafari] = useState(false);
 
     useEffect(() => {
