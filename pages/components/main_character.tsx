@@ -1,8 +1,14 @@
 import React, {useEffect} from 'react';
 import styles from '../css/main_character.module.css';
 import CardCharacter from './card_character';
-
-const MainCharacter = ({ characterData, onListen, listenMode, setListenMode, onListenModeChange }) => {
+interface MainCharacterProps {
+    characterData: YourCharacterDataType; // Replace with the actual type of characterData
+    onListen: Function;
+    listenMode: boolean;
+    setListenMode: Function;
+    onListenModeChange: Function;
+}
+const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, onListen, listenMode, setListenMode, onListenModeChange }) => {
     const handleListenModeChange = (mode) => {
         setListenMode(mode);
         console.log('main_character测试listenMode:', mode);
