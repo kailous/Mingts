@@ -9,6 +9,9 @@ interface CardData {
 }
 
 const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {
+    if (!data || !data.gifurl) {
+        return null; // or handle the case where content is not defined
+    }
     const [isSafari, setIsSafari] = useState(false);
 
     useEffect(() => {
