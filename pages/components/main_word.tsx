@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../css/main_word.module.css';
 import CardWord from './card_word';
 interface MainWordProps {
-    characterData: any[]; // Replace with the actual type of characterData
+    wordData: any[]; // Replace with the actual type of characterData
     listenMode: boolean;
 }
 const MainWord: React.FC<MainWordProps> = ({ wordData, listenMode }) => {
