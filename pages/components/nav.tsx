@@ -19,13 +19,17 @@ const Navigation: React.FC<NavProps> = ({ textareaContent, listenMode, onListenM
         window.open('/', '_self');
     }
 
+    const onNone = () => {
+
+    }
+
     // @ts-ignore
     return (
         <nav className={styles.nav}>
             <div className={styles.left}>
                 <button
                     className={listenMode ? styles.study : styles.high}
-                    onClick={listenMode ? null : onStudy}
+                    onClick={listenMode ? onNone : onStudy}
                 >
                     <svg className="iconpark-icon">
                         <use href="#study"></use>
