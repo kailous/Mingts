@@ -6,7 +6,6 @@ import cheerio from 'cheerio';
 // 先定义好数据的类型结构
 interface Entry {
     content: string;
-
     gifurl: string;
     pinyin: { pinyinText: string; pinyinLink: string }[];
     defn: string;
@@ -29,23 +28,33 @@ async function getHanzBishun(searchWords: string[]) {
             // 从HTML中提取数据的逻辑
             const gifUrl = $('#word_bishun').attr('data-gif');
             const pinyinDiv = $('#pinyin');
-            const pinyinList = pinyinDiv.find('span').toArray().map((spanElement) => {
-                const span = $(spanElement);
-                const pinyin = span.text().trim().replace(/[\[\]]/g, ''); // 删除 '[' 和 ']'
-                const pinyinLink = span.find('a').attr('url');
-                return { pinyin, pinyinLink };
-            });
+            const pinyinList = pinyinDiv
+                .find('span')
+                .toArray()
+                .map((spanElement) => {
+                    const span = $(spanElement);
+                    const pinyin = span.text().trim().replace(/[\[\]]/g, ''); // 删除 '[' 和 ']'
+                    const pinyinLink = span.find('a').attr('url');
+                    return { pinyin, pinyinLink };
+                });
             const baikeWrapperDiv = $('#baike-wrapper');
             const tabContentDiv = baikeWrapperDiv.find('.tab-content');
-            const meanings = tabContentDiv.find('p').toArray().map((pElement) => {
-                $(pElement).find('a').remove();
-                return $(pElement).text().trim();
-            }).join(' ');
+            const meanings = tabContentDiv
+                .find('p')
+                .toArray()
+                .map((pElement) => {
+                    $(pElement).find('a').remove();
+                    return $(pElement).text().trim();
+                })
+                .join(' ');
             const zuciWrapperDiv = $('#zuci-wrapper');
             const zuciTabContentDiv = zuciWrapperDiv.find('.tab-content');
-            const linkTerms = zuciTabContentDiv.find('a').toArray().map((aElement) => {
-                return $(aElement).text().trim();
-            });
+            const linkTerms = zuciTabContentDiv
+                .find('a')
+                .toArray()
+                .map((aElement) => {
+                    return $(aElement).text().trim();
+                });
             if (linkTerms.length > 0) {
                 linkTerms.pop();
             }
@@ -55,14 +64,15 @@ async function getHanzBishun(searchWords: string[]) {
             const entry: Entry = {
                 content: searchWord || '没有收录',
                 gifurl: gifUrl || './dictation_bihua.png',
-                pinyin: (pinyinList && pinyinList.length > 0)
-                    ? pinyinList.map(item => ({
-                        pinyinText: (item && item.pinyin) ? item.pinyin.trim() : 'none',
-                        pinyinLink: (item && item.pinyinLink) ? item.pinyinLink.trim() : 'none'
-                    }))
-                    : [{ pinyinText: 'none', pinyinLink: 'none' }],
+                pinyin:
+                    pinyinList && pinyinList.length > 0
+                        ? pinyinList.map((item) => ({
+                            pinyinText: item && item.pinyin ? item.pinyin.trim() : 'none',
+                            pinyinLink: item && item.pinyinLink ? item.pinyinLink.trim() : 'none',
+                        }))
+                        : [{ pinyinText: 'none', pinyinLink: 'none' }],
                 defn: meanings || '发现了未知事物，还没有被收录呢。', // Return empty string if meanings is empty
-                gow: linkTerms || ['找不到合适的词组'] // Return an empty array if linkTerms is empty
+                gow: linkTerms || ['找不到合适的词组'], // Return an empty array if linkTerms is empty
             };
 
             results[type].push(entry);
@@ -74,7 +84,7 @@ async function getHanzBishun(searchWords: string[]) {
     return results;
 }
 
-export default async (req: NextApiRequest, res: NextApiResponse) => {
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     const { zi } = req.query;
     const searchWords = (zi as string).split(' ');
 
@@ -91,3 +101,5 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         res.status(500).json({ Error: '内部服务器错误' });
     }
 };
+
+export default handler;
