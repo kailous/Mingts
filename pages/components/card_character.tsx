@@ -2,10 +2,10 @@ import React, {useEffect, useState} from 'react';
 import styles from '../css/card_character.module.css';
 
 interface CardCharacterProps {
-    data: CardData[]; // Replace with the actual type of characterData
+    data: CharacterData; // Replace with the actual type of characterData
     listenMode: boolean;
 }
-interface CardData {
+interface CharacterData {
     gifurl: string;
     pinyin: Pinyin[]; // 这里根据实际情况定义 pinyin 的类型
     defn: string;
@@ -17,9 +17,8 @@ interface Pinyin {
     pinyinLink: string;
 }
 
-export type { CardData };  // Use 'export type' to re-export the type
+export type { CharacterData };  // Use 'export type' to re-export the type
 const CardCharacter: React.FC<CardCharacterProps> = ({ data, listenMode }) => {
-
 
     const [isSafari, setIsSafari] = useState(false);
 
@@ -28,6 +27,7 @@ const CardCharacter: React.FC<CardCharacterProps> = ({ data, listenMode }) => {
         const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         setIsSafari(isSafariBrowser);
     }, []);
+
 
     if (!data || !data.gifurl) {
         return null; // or handle the case where content is not defined

@@ -2,10 +2,10 @@ import React from 'react';
 import styles from '../css/card_word.module.css';
 
 interface CardWordProps {
-    data: CardData[]; // Replace with the actual type of characterData
+    data: CardWordData; // Replace with the actual type of characterData
     listenMode: boolean;
 }
-interface CardData {
+interface CardWordData {
     content: string;
     pinyin: Pinyin[]; // 这里根据实际情况定义 pinyin 的类型
     defn: string;
@@ -14,7 +14,7 @@ interface Pinyin {
     pinyinText: string;
     pinyinLink: string;
 }
-export type { CardData };  // Use 'export type' to re-export the type
+export type { CardWordData };  // Use 'export type' to re-export the type
 const CardWord: React.FC<CardWordProps> = ({ data, listenMode }) => {
 
 // const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {    // @ts-ignore

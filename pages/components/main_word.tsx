@@ -1,8 +1,8 @@
 import React from 'react';
 import styles from '../css/main_word.module.css';
-import CardWord, { CardData } from './card_word';
+import CardWord, { CardWordData } from './card_word';
 interface MainWordProps {
-    wordData: CardData[]; // Replace with the actual type of characterData
+    wordData: CardWordData[]; // Replace with the actual type of characterData
     listenMode: boolean;
 }
 

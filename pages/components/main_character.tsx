@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from '../css/main_character.module.css';
-import CardCharacter, { CardData } from './card_character';
+import CardCharacter, { CharacterData } from './card_character';
 
 interface MainCharacterProps {
-    characterData: CardData[]; // Replace with the actual type of characterData
+    characterData: CharacterData[]; // Replace with the actual type of characterData
     listenMode: boolean;
 }
 
