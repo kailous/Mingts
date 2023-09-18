@@ -4,10 +4,17 @@ import MainCharacter from './main_character';
 import MainWord from './main_word';
 import { useRouter } from 'next/router';
 
-const Main = ({ onListen,listenMode,setListenMode,onListenModeChange }) => {
+interface MainProps {
+    onListen: Function;  // 这里可以根据实际函数签名调整类型
+    listenMode: boolean;
+    setListenMode: Function;  // 这里可以根据实际函数签名调整类型
+    onListenModeChange: Function;  // 这里可以根据实际函数签名调整类型
+}
+const Main: React.FC<MainProps> = ({ onListen, listenMode, setListenMode, onListenModeChange }) => {
     const router = useRouter();
     const [characterData, setCharacterData] = useState([]);
     const [wordData, setWordData] = useState([]);
+    // @ts-ignore
     const handleListenModeChange = (mode) => {
         setListenMode(mode);
         console.log('main测试listenMode:', mode);
@@ -52,6 +59,6 @@ const Main = ({ onListen,listenMode,setListenMode,onListenModeChange }) => {
             />
         </main>
     );
-}
+};
 
 export default Main;
