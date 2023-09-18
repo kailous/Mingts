@@ -1,7 +1,11 @@
 import React from 'react';
 import styles from '../css/nav.module.css';
 
-const Navigation = ({ textareaContent, listenMode, onListenModeChange }) => {
+interface NavProps {
+    textareaContent: string;
+}
+// @ts-ignore
+const Navigation: React.FC<NavProps> = ({ textareaContent, listenMode, onListenModeChange }) => {
     const onStudy = () => {
         window.open(`/?zi=${encodeURIComponent(textareaContent)}`, '_self');
     }
@@ -15,6 +19,7 @@ const Navigation = ({ textareaContent, listenMode, onListenModeChange }) => {
         window.open('/', '_self');
     }
 
+    // @ts-ignore
     return (
         <nav className={styles.nav}>
             <div className={styles.left}>

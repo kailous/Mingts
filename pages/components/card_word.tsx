@@ -23,11 +23,13 @@ const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean })
             <div className={styles.info}>
                 <div className={styles.pinyin}>
                     <h2>{pinyin[0].pinyinText}</h2>
-                    <button onClick={playAudio}>
-                        <svg className="iconpark-icon">
-                            <use href="#play"></use>
-                        </svg>
-                    </button>
+                    {pinyin[0].pinyinText !== 'none' && (
+                        <button onClick={playAudio}>
+                            <svg className="iconpark-icon">
+                                <use href="#play"></use>
+                            </svg>
+                        </button>
+                    )}
                 </div>
                 {
                     listenMode ? (
