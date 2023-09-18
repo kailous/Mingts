@@ -12,6 +12,7 @@ interface Pinyin {
     pinyinText: string;
     pinyinLink: string;
 }
+export type { CardData };  // Use 'export type' to re-export the type
 
 const CardCharacter = ({data, listenMode}: { data: CardData, listenMode: boolean }) => {
 
@@ -85,4 +86,3 @@ const CardCharacter = ({data, listenMode}: { data: CardData, listenMode: boolean
 };
 
 export default CardCharacter;
-export { CardData };

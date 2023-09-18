@@ -10,7 +10,7 @@ interface Pinyin {
     pinyinText: string;
     pinyinLink: string;
 }
-
+export type { CardData };  // Use 'export type' to re-export the type
 const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {    // @ts-ignore
     if (!data || !data.content) {
         return null; // or handle the case where content is not defined
@@ -54,4 +54,3 @@ const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean })
 };
 
 export default CardWord;
-export { CardData };
