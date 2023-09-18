@@ -8,7 +8,9 @@ interface CardData {
 }
 
 const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {    // @ts-ignore
-
+    if (!data || !data.content) {
+        return null; // or handle the case where content is not defined
+    }
     const { content, pinyin, defn } = data;
 
     // Function to play audio
