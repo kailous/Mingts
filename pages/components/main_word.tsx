@@ -1,16 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from '../css/main_word.module.css';
 import CardWord from './card_word';
-
-const MainWord = ({ wordData, onListen, listenMode, setListenMode, onListenModeChange }) => {
-    const handleListenModeChange = (mode) => {
-        setListenMode(mode);
-        console.log('main_word测试listenMode:', mode);
-    };
-
-    useEffect(() => {
-        console.log('main_word测试listenMode:', listenMode);
-    }, [listenMode]);
+interface MainWordProps {
+    characterData: any[]; // Replace with the actual type of characterData
+    listenMode: boolean;
+}
+const MainWord: React.FC<MainWordProps> = ({ wordData, listenMode }) => {
 
     return (
         <div className={styles.mainword}>
@@ -23,10 +18,7 @@ const MainWord = ({ wordData, onListen, listenMode, setListenMode, onListenModeC
                         <CardWord
                             key={index}
                             data={word}
-                            onListen={onListen}
-                            setListenMode={setListenMode}
                             listenMode={listenMode}
-                            onListenModeChange={handleListenModeChange}
                         />
                     ))
                 )}

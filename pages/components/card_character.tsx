@@ -16,10 +16,6 @@ const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boole
         const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
         setIsSafari(isSafariBrowser);
     }, []);
-    // const handleListenModeChange = (mode) => {
-    //     setListenMode(mode);
-    //     console.log('main_character测试listenMode:', mode);
-    // }
 
     const { gifurl, pinyin, defn, gow } = data;
 

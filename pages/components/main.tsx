@@ -5,23 +5,15 @@ import MainWord from './main_word';
 import { useRouter } from 'next/router';
 
 interface MainProps {
-    onListen: Function;  // 这里可以根据实际函数签名调整类型
     listenMode: boolean;
-    setListenMode: Function;  // 这里可以根据实际函数签名调整类型
-    onListenModeChange: Function;  // 这里可以根据实际函数签名调整类型
 }
-const Main: React.FC<MainProps> = ({ onListen, listenMode, setListenMode, onListenModeChange }) => {
+const Main: React.FC<MainProps> = ({ listenMode }) => {
     const router = useRouter();
     const [characterData, setCharacterData] = useState([]);
     const [wordData, setWordData] = useState([]);
-    // @ts-ignore
-    const handleListenModeChange = (mode) => {
-        setListenMode(mode);
-        console.log('main测试listenMode:', mode);
-    }
+
     // 测试listenMode传递
     useEffect(() => {
-        console.log('main测试listenMode:', listenMode);
         const { zi } = router.query;
 
         if (zi) {
@@ -37,25 +29,22 @@ const Main: React.FC<MainProps> = ({ onListen, listenMode, setListenMode, onList
                 })
                 .catch(error => console.error('Error fetching data:', error));
         }
-    }, [router.query,listenMode]);
+    }, [router.query]);
 
+    // @ts-ignore
+    // @ts-ignore
     return (
         <main className={styles.main}>
             <MainCharacter
                 characterData={characterData}
                 // @ts-ignore
-                onListen={onListen}
-                setListenMode={setListenMode} // Pass setListenMode as prop
                 listenMode={listenMode}
-                onListenModeChange={handleListenModeChange}
             />
             <MainWord
+                // @ts-ignore
                 wordData={wordData}
                 // @ts-ignore
-                onListen={onListen}
-                setListenMode={setListenMode} // Pass setListenMode as prop
                 listenMode={listenMode}
-                onListenModeChange={handleListenModeChange}
             />
         </main>
     );

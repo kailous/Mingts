@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from '../css/card_word.module.css';
 
 interface CardData {
@@ -7,15 +7,7 @@ interface CardData {
     defn: string;
 }
 
-const CardWord = ({ data, onListen, listenMode, setListenMode, onListenModeChange }: { data: CardData, onListen: Function, listenMode: boolean, setListenMode: Function, onListenModeChange: Function }) => {    // @ts-ignore
-    // const handleListenModeChange = (mode) => {
-    //     setListenMode(mode);
-    //     console.log('word测试listenMode1:', mode);
-    // }
-    // 测试listenMode传递
-    // useEffect(() => {
-    //     console.log('word测试listenMode2:', listenMode);
-    // }, [listenMode]);
+const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {    // @ts-ignore
 
     const { content, pinyin, defn } = data;
 

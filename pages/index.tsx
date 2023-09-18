@@ -34,14 +34,11 @@ const MyPage: React.FC = () => {
                 onListen={onListen}
                 listenMode={listenMode}
                 setListenMode={setListenMode}
-                onListenModeChange={handleListenModeChange} /* 传递相关参数给 Header 组件 */
             />
             <Main
                 // @ts-ignore // 忽略类型检查
                 onListen={onListen}
                 listenMode={listenMode}
-                setListenMode={setListenMode}
-                onListenModeChange={handleListenModeChange} /* 传递相关参数给 Main 组件 */
             />
         </>
     );

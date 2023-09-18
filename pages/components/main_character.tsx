@@ -1,22 +1,11 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import styles from '../css/main_character.module.css';
 import CardCharacter from './card_character';
 interface MainCharacterProps {
     characterData: any[]; // Replace with the actual type of characterData
-    onListen: Function;
     listenMode: boolean;
-    setListenMode: Function;
-    onListenModeChange: Function;
 }
-const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, onListen, listenMode, setListenMode, onListenModeChange }) => {
-    // const handleListenModeChange = (mode) => {
-    //     setListenMode(mode);
-    //     console.log('main_character测试listenMode:', mode);
-    // };
-    //
-    // useEffect(() => {
-    //     console.log('main_character测试listenMode:', listenMode);
-    // }, [listenMode]);
+const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, listenMode }) => {
 
     return (
         <div className={styles.maincharacter}>
@@ -29,10 +18,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, onListen, 
                         <CardCharacter
                             key={index}
                             data={character}
-                            onListen={onListen}  // 此处确保传入正确的属性
-                            setListenMode={setListenMode}
                             listenMode={listenMode}
-                            // onListenModeChange={handleListenModeChange}
                         />
                     ))
                 )}
