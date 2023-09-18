@@ -1,0 +1,156 @@
+div.card {
+    display: flex;
+    flex: 1 0 calc(50% - 10px); /* 使用 flex 属性自动调整卡片宽度 */
+    width: calc(50% - 10px);
+    min-width: 600px;
+    align-items: flex-start;
+    border-radius: var(--card-radius);
+    background: var(--card-color);
+    overflow: hidden;
+}
+div.bihua {
+    display: flex;
+    max-width: 346px;
+    padding: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex: 1 0 0;
+    align-self: stretch;
+    background: var(--pinyin-bg-color);
+}
+div.bihua div.img {
+    width: 230px;
+    height: 230px;
+    padding: 2px; /* 创建 2px 的内边距 */
+    margin: 0 auto;
+    background-clip: content-box; /* 裁剪背景图到内容框内 */
+    background-position: 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #fff;
+    box-sizing: border-box;
+    background-blend-mode: luminosity, normal;
+
+}
+div.info {
+    display: flex;
+    padding: 30px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0 0;
+    align-self: stretch;
+}
+ul.pinyin {
+    display: flex;
+    min-width: 210px;
+    justify-content: center;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 10px;
+    align-self: stretch;
+    flex-wrap: wrap;
+    list-style: none;
+}
+ul.pinyin button {
+    display: flex;
+    padding: 5px 10px;
+    align-items: center;
+    gap: 5px;
+    border-radius: 10px;
+    background: var(--pinyin-button-bg-color);
+    border: none;
+}
+ul.pinyin button p {
+    color: var(--text-color);
+
+    /* --pinyin-text */
+    font-family: SF Pro Text;
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%; /* 18px */
+}
+ul.pinyin button svg {
+    width: 14px;
+    height: 14px;
+}
+div.info {
+    display: flex;
+    padding: 30px;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1 0;
+    align-self: stretch;
+    justify-content: space-between;
+}
+div.info p.shiyi {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 7;
+    align-self: stretch;
+
+    overflow: hidden;
+    color: var(--text-color);
+    text-align: justify;
+    text-overflow: ellipsis;
+
+    /* --shiyi-text/桌面端 */
+    font-family: SF Pro Text;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    opacity: 0.6;
+}
+div.info ul {
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 6px;
+    align-self: stretch;
+    flex-wrap: wrap;
+    list-style: none;
+}
+div.info ul li {
+    display: flex;
+    padding: 4px 7px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    background: var(--zuci-button-color);
+    color: var(--text-color);
+
+    /* --zuci-button-text/移动端 */
+    font-family: SF Pro Text;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    /*line-height: 140%; !* 22.4px *!*/
+}
+/*当宽度小于660px时*/
+@media (max-width: 660px) {
+    div.card {
+        flex-direction: column;
+        min-width: 290px;
+        width: 100%;
+        flex: 1 0 0; /* 使用 flex 属性自动调整卡片宽度 */
+    }
+    div.bihua {
+        max-width: 100%;
+    }
+    div.info {
+        display: flex;
+        padding: 20px 20px 30px 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+        align-self: stretch;
+    }
+}
+@media (prefers-color-scheme: dark) {
+    div.bihua div.img {
+    background-color: var(--pinyin-img-bg-color);
+    background-blend-mode: soft-light, normal;
+    }
+}

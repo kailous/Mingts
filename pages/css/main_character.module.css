@@ -1,0 +1,29 @@
+div.maincharacter {
+    display: flex;
+    max-width: var(--max-width);
+    padding: 60px 20px 40px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 25px;
+    align-self: stretch;
+    border-radius: var(--card-mian);
+    background: var(--background-color-2, #E6E6E6);
+    margin: 0 auto;
+}
+div.maincharacter h1 {
+    color: var(--text-color, #000);
+    font-family: SF Pro Text;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 100%; /* 24px */
+}
+div.maincharacter div.list {
+    display: flex;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 20px;
+    align-self: stretch;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}

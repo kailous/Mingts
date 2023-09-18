@@ -1,0 +1,39 @@
+import React, {useEffect} from 'react';
+import styles from '../css/main_word.module.css';
+import CardWord from './card_word';
+
+const MainWord = ({ wordData, onListen, listenMode, setListenMode, onListenModeChange }) => {
+    const handleListenModeChange = (mode) => {
+        setListenMode(mode);
+        console.log('main_word测试listenMode:', mode);
+    };
+
+    useEffect(() => {
+        console.log('main_word测试listenMode:', listenMode);
+    }, [listenMode]);
+
+    return (
+        <div className={styles.mainword}>
+            <h1>生词</h1>
+            <div className={styles.list}>
+                {wordData.length === 0 ? (
+                    <p>没有需要学习的单词哦～</p>
+                ) : (
+                    wordData.map((word, index) => (
+                        <CardWord
+                            key={index}
+                            data={word}
+                            onListen={onListen}
+                            setListenMode={setListenMode}
+                            listenMode={listenMode}
+                            onListenModeChange={handleListenModeChange}
+                        />
+                    ))
+                )}
+            </div>
+        </div>
+    );
+};
+
+export default MainWord;
+

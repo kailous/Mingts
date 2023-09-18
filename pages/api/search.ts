@@ -1,0 +1,80 @@
+// pages/api/search.ts
+import { NextApiRequest, NextApiResponse } from 'next';
+import axios from 'axios';
+import cheerio from 'cheerio';
+
+async function getHanzBishun(searchWords: string[]) {
+    const results = {
+        character: [],
+        word: []
+    };
+
+    for (const searchWord of searchWords) {
+        const url = `https://hanyu.baidu.com/s?wd=${searchWord}&cf=rcmd&t=img&ptype=zici`;
+
+        try {
+            const response = await axios.get(url, { responseType: 'text' });
+            const $ = cheerio.load(response.data);
+
+            // 从HTML中提取数据的逻辑
+            const gifUrl = $('#word_bishun').attr('data-gif');
+            const pinyinDiv = $('#pinyin');
+            const pinyinList = pinyinDiv.find('span').toArray().map((spanElement) => {
+                const span = $(spanElement);
+                const pinyin = span.text().trim().replace(/\[|\]/g, ''); // 删除 '[' 和 ']'
+                const pinyinLink = span.find('a').attr('url');
+                return { pinyin, pinyinLink };
+            });
+            const baikeWrapperDiv = $('#baike-wrapper');
+            const tabContentDiv = baikeWrapperDiv.find('.tab-content');
+            const meanings = tabContentDiv.find('p').toArray().map((pElement) => {
+                $(pElement).find('a').remove();
+                return $(pElement).text().trim();
+            }).join(' ');
+            const zuciWrapperDiv = $('#zuci-wrapper');
+            const zuciTabContentDiv = zuciWrapperDiv.find('.tab-content');
+            const linkTerms = zuciTabContentDiv.find('a').toArray().map((aElement) => {
+                return $(aElement).text().trim();
+            });
+            if (linkTerms.length > 0) {
+                linkTerms.pop();
+            }
+
+            // 根据内容长度确定类型
+            const type = searchWord.length === 1 ? 'character' : 'word';
+
+            const entry = {
+                content: searchWord,
+                type: type,
+                gifurl: gifUrl,
+                pinyin: pinyinList.map(item => ({ pinyinText: item.pinyin.trim(), pinyinLink: item.pinyinLink.trim() })), // 修改pinyin的格式
+                defn: meanings,
+                gow: linkTerms
+            };
+
+            results[type].push(entry);
+        } catch (error) {
+            console.error(`获取${searchWord}数据时出错: ${error}`);
+        }
+    }
+
+    return results;
+}
+
+export default async (req: NextApiRequest, res: NextApiResponse) => {
+    const { zi } = req.query;
+    const searchWords = (zi as string).split(' ');
+
+    try {
+        const result = await getHanzBishun(searchWords);
+
+        if (result) {
+            res.json(result);
+        } else {
+            res.status(404).json({ 错误: `无法获取${zi}的数据` });
+        }
+    } catch (error) {
+        console.error(`获取${zi}数据时出错: ${error}`);
+        res.status(500).json({ 错误: '内部服务器错误' });
+    }
+};

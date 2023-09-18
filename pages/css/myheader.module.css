@@ -1,0 +1,33 @@
+div.header {
+    display: flex;
+    /*width: 667px;*/
+    max-width: var(--max-width);
+    padding: 40px 20px 0px 20px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 40px;
+    margin: 0 auto;
+}
+div.header svg {
+    width: 151.589px;
+    height: 80px;
+}
+.header textarea {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 8;
+    align-self: stretch;
+    background: none;
+    border: none;
+    resize: none;
+}
+.header textarea:focus {
+    outline: none;
+    border: none;
+}
+.header textarea::-webkit-scrollbar {
+    display: none;
+}
+.header textarea {
+    scrollbar-width: none;
+}

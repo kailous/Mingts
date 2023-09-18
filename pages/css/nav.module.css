@@ -1,0 +1,55 @@
+nav.nav {
+    display: flex;
+    width: 100%;
+    height: 20px;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+nav.nav div.left,nav.nav div.right {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+nav.nav button {
+    display: flex;
+    height: 40px;
+    padding: 15px 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 74px;
+    border: none;
+    gap: 5px;
+    background: #F5F5F5;
+    color: #FF3131;
+}
+nav.nav div.right button {
+    width: 40px;
+    padding: 0;
+}
+nav.nav button svg {
+    width: 20px;
+    height: 20px;
+}
+nav.nav button p {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    overflow: hidden;
+    text-align: justify;
+    leading-trim: both;
+    text-edge: cap;
+    text-overflow: ellipsis;
+    font-family: SF Pro Text;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+button.high {
+    background: #FF3131 !important;
+    color: #FFF !important;
+}
+button.study {
+    background: #F5F5F5 !important;
+    color: #ababab !important;
+}
