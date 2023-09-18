@@ -29,7 +29,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, onListen, 
                         <CardCharacter
                             key={index}
                             data={character}
-                            onListen={onListen}
+                            onListen={onListen}  // 此处确保传入正确的属性
                             setListenMode={setListenMode}
                             listenMode={listenMode}
                             // onListenModeChange={handleListenModeChange}
