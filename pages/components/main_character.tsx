@@ -2,8 +2,18 @@ import React from 'react';
 import styles from '../css/main_character.module.css';
 import CardCharacter from './card_character';
 interface MainCharacterProps {
-    characterData: any[]; // Replace with the actual type of characterData
+    characterData: CardCharacterData[]; // Replace with the actual type of characterData
     listenMode: boolean;
+}
+interface CardCharacterData {
+    gifurl: string;
+    pinyin: Pinyin[]; // 这里根据实际情况定义 pinyin 的类型
+    defn: string;
+    gow: string[];
+}
+interface Pinyin {
+    pinyinText: string;
+    pinyinLink: string;
 }
 const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, listenMode }) => {
 

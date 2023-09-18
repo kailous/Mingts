@@ -3,8 +3,12 @@ import styles from '../css/card_word.module.css';
 
 interface CardData {
     content: string;
-    pinyin: any[]; // 这里根据实际情况定义 pinyin 的类型
+    pinyin: Pinyin[]; // 这里根据实际情况定义 pinyin 的类型
     defn: string;
+}
+interface Pinyin {
+    pinyinText: string;
+    pinyinLink: string;
 }
 
 const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {    // @ts-ignore
