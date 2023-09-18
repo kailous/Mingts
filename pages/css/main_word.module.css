@@ -9,7 +9,7 @@ div.mainword {
     margin: 0 auto;
 }
 div.mainword h1 {
-    color: var(--text-color, #000);
+    color: var(--text-color);
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
