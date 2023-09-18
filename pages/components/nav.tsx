@@ -2,7 +2,7 @@ import React from 'react';
 import styles from '../css/nav.module.css';
 
 interface NavProps {
-    textareaContent: string;
+    textareaContent: any;
 }
 // @ts-ignore
 const Navigation: React.FC<NavProps> = ({ textareaContent, listenMode, onListenModeChange }) => {
