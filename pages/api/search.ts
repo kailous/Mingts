@@ -42,11 +42,17 @@ async function getHanzBishun(searchWords: string[]) {
 
             // 根据内容长度确定类型
             const type = searchWord.length === 1 ? 'character' : 'word';
-
-            const entry = {
-                content: searchWord || '没有收录', // Return empty string if searchWord is empty
-                type: type || 'unknown', // Return empty string if type is empty
-                gifurl: gifUrl || './dictation_bihua.png', // Return empty string if gifUrl is empty
+            const entry: {
+                content: string;
+                type: string;
+                gifurl: string;
+                pinyin: { pinyinText: string; pinyinLink: string }[];
+                defn: string;
+                gow: string[];
+            } = {
+                content: searchWord || '没有收录',
+                type: type,
+                gifurl: gifUrl || './dictation_bihua.png',
                 pinyin: (pinyinList && pinyinList.length > 0)
                     ? pinyinList.map(item => ({
                         pinyinText: (item && item.pinyin) ? item.pinyin.trim() : 'none',
