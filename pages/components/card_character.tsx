@@ -3,15 +3,20 @@ import styles from '../css/card_character.module.css';
 
 interface CardData {
     gifurl: string;
-    pinyin: any[]; // 这里根据实际情况定义 pinyin 的类型
+    pinyin: Pinyin[]; // 这里根据实际情况定义 pinyin 的类型
     defn: string;
     gow: string[];
+}
+interface Pinyin {
+    pinyinText: string;
+    pinyinLink: string;
 }
 
 const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boolean }) => {
     if (!data || !data.gifurl) {
         return null; // or handle the case where content is not defined
     }
+
     const [isSafari, setIsSafari] = useState(false);
 
     useEffect(() => {
@@ -22,11 +27,11 @@ const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boole
 
     const { gifurl, pinyin, defn, gow } = data;
 
-    const handlePlayAudio = (audioUrl: string) => {
-        // 现在 TypeScript 知道 audioUrl 是字符串类型了
+    const handlePlayAudio = (audioUrl: string): void => {
         const audio = new Audio(audioUrl);
         audio.play().then();
     };
+
 
 
     return (
