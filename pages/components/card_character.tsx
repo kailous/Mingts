@@ -25,7 +25,7 @@ const CardCharacter = ({ data, listenMode }: { data: CardData, listenMode: boole
     const handlePlayAudio = (audioUrl: string) => {
         // 现在 TypeScript 知道 audioUrl 是字符串类型了
         const audio = new Audio(audioUrl);
-        audio.play();
+        audio.play().then();
     };
 
 

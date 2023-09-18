@@ -7,15 +7,26 @@ import { useRouter } from 'next/router';
 interface MainProps {
     listenMode: boolean;
 }
+interface WordDataType {
+    type: string;
+    content: string;
+    pinyin: any[]; // 这里根据实际情况定义 pinyin 的类型
+    defn: string;
+}
+interface CharacterDataType {
+    type: string;
+    gifurl: string;
+    pinyin: any[]; // 这里根据实际情况定义 pinyin 的类型
+    defn: string;
+    gow: string[];
+}
 const Main: React.FC<MainProps> = ({ listenMode }) => {
     const router = useRouter();
-    const [characterData, setCharacterData] = useState([]);
-    const [wordData, setWordData] = useState([]);
+    const [characterData, setCharacterData] = useState<CharacterDataType[]>([]);
+    const [wordData, setWordData] = useState<WordDataType[]>([]);
 
-    // 测试listenMode传递
     useEffect(() => {
         const { zi } = router.query;
-
         if (zi) {
             fetch(`/api/search?zi=${zi}`)
                 .then(response => response.json())
@@ -31,19 +42,14 @@ const Main: React.FC<MainProps> = ({ listenMode }) => {
         }
     }, [router.query]);
 
-    // @ts-ignore
-    // @ts-ignore
     return (
         <main className={styles.main}>
             <MainCharacter
                 characterData={characterData}
-                // @ts-ignore
                 listenMode={listenMode}
             />
             <MainWord
-                // @ts-ignore
                 wordData={wordData}
-                // @ts-ignore
                 listenMode={listenMode}
             />
         </main>

@@ -16,7 +16,7 @@ const CardWord = ({ data, listenMode }: { data: CardData, listenMode: boolean })
     // Function to play audio
     const playAudio = () => {
         const audio = new Audio(pinyin[0].pinyinLink);
-        audio.play();
+        audio.play().then();
     }
 
     return (
