@@ -9,14 +9,14 @@ interface MainCharacterProps {
     onListenModeChange: Function;
 }
 const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, onListen, listenMode, setListenMode, onListenModeChange }) => {
-    const handleListenModeChange = (mode) => {
-        setListenMode(mode);
-        console.log('main_character测试listenMode:', mode);
-    };
-
-    useEffect(() => {
-        console.log('main_character测试listenMode:', listenMode);
-    }, [listenMode]);
+    // const handleListenModeChange = (mode) => {
+    //     setListenMode(mode);
+    //     console.log('main_character测试listenMode:', mode);
+    // };
+    //
+    // useEffect(() => {
+    //     console.log('main_character测试listenMode:', listenMode);
+    // }, [listenMode]);
 
     return (
         <div className={styles.maincharacter}>
@@ -32,7 +32,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, onListen, 
                             onListen={onListen}
                             setListenMode={setListenMode}
                             listenMode={listenMode}
-                            onListenModeChange={handleListenModeChange}
+                            // onListenModeChange={handleListenModeChange}
                         />
                     ))
                 )}
