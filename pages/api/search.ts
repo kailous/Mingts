@@ -3,10 +3,20 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import cheerio from 'cheerio';
 
+// 先定义好数据的类型结构
+interface Entry {
+    content: string;
+    type: string;
+    gifurl: string;
+    pinyin: { pinyinText: string; pinyinLink: string }[];
+    defn: string;
+    gow: string[];
+}
+
 async function getHanzBishun(searchWords: string[]) {
     const results = {
-        character: [],
-        word: []
+        character: [] as Entry[], // 使用 Entry 类型
+        word: [] as Entry[], // 使用 Entry 类型
     };
 
     for (const searchWord of searchWords) {
@@ -42,14 +52,7 @@ async function getHanzBishun(searchWords: string[]) {
 
             // 根据内容长度确定类型
             const type = searchWord.length === 1 ? 'character' : 'word';
-            const entry: {
-                content: string;
-                type: string;
-                gifurl: string;
-                pinyin: { pinyinText: string; pinyinLink: string }[];
-                defn: string;
-                gow: string[];
-            } = {
+            const entry: Entry = {
                 content: searchWord || '没有收录',
                 type: type,
                 gifurl: gifUrl || './dictation_bihua.png',
