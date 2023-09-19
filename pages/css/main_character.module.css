@@ -7,11 +7,11 @@ div.maincharacter {
     gap: 25px;
     align-self: stretch;
     border-radius: var(--card-mian);
-    background: var(--background-color-2);
+    background: var(--background-color-2, #E6E6E6);
     margin: 0 auto;
 }
 div.maincharacter h1 {
-    color: var(--text-color);
+    color: var(--text-color, #000);
     font-size: 24px;
     font-style: normal;
     font-weight: 600;
