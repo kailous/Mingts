@@ -6,13 +6,27 @@ import Header from "./components/header";
 import Main from "./components/main";
 
 const MyPage: React.FC = () => {
+    // 创建一个loading状态
+    const [loadingMode, setLoadingMode] = useState(false);
     const [listenMode, setListenMode] = useState(false);
 
     // 处理 listenMode 变化的回调函数
     // @ts-ignore // 忽略类型检查
     const handleListenModeChange = (mode) => {
         setListenMode(mode);
+        setLoadingMode(mode);
     };
+
+    const onLoadingTrue = () => {
+        // 初始化 loading 状态
+        setLoadingMode(true);
+
+    }
+    const onLoadingFalse = () => {
+        // 初始化 loading 状态
+        setLoadingMode(false);
+
+    }
 
     // 处理听写按钮点击
     const onListen = () => {
@@ -39,6 +53,11 @@ const MyPage: React.FC = () => {
                 // @ts-ignore // 忽略类型检查
                 onListen={onListen}
                 listenMode={listenMode}
+                onLoadingTrue={onLoadingTrue}
+                onLoadingFalse={onLoadingFalse}
+                loadingMode={loadingMode}
+                setLoadingMode={setLoadingMode}
+
             />
         </>
     );

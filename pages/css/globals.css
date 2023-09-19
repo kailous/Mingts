@@ -1,5 +1,6 @@
 /* 默认变量 */
 :root {
+    --max-line-clamp:3;
     --max-width: 1440px;
     --card-mian: 10px;
     --card-radius: 30px;
@@ -67,4 +68,15 @@ body,html {
 
 button {
     cursor: pointer;
+}
+/* 宽度为1080的时候 */
+@media (max-width: 1080px) {
+    :root {
+        --max-line-clamp:4;
+    }
+}
+@media (max-width: 850px) {
+    :root {
+        --max-line-clamp:5;
+    }
 }
