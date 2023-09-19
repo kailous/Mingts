@@ -14,7 +14,7 @@ const MainWord: React.FC<MainWordProps> = ({ wordData, listenMode ,loadingMode})
         <div className={styles.mainword}>
             <h1>生词</h1>
             <div className={styles.list}>
-                {loadingMode ? (
+                {loadingMode === true ? (
                     <p>Loading...</p>
                 ) : (
                     wordData && wordData.length === 0 ? (

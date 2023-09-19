@@ -14,7 +14,7 @@ const MainCharacter: React.FC<MainCharacterProps> = ({ characterData, listenMode
         <div className={styles.maincharacter}>
             <h1>生字</h1>
             <div className={styles.list}>
-                {loadingMode ? (
+                {loadingMode === true ? (
                     <p>Loading...</p>
                 ) : (
                     characterData && characterData.length === 0 ? (
