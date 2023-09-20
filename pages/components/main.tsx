@@ -38,7 +38,15 @@ const Main: React.FC<MainProps> = ({ listenMode,loadingMode ,onLoadingTrue,onLoa
         if (zi) {
             // 触发 onLoadingTrue 函数
             onLoadingTrue();
-            fetch(`/api/search?zi=${zi}`)
+
+            // 新的请求配置，使用POST请求，将zi作为请求体参数
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ zi }),
+            };
+
+            fetch(`/api/search`, requestOptions)  // 发起POST请求
                 .then(response => response.json())
                 .then(data => {
                     if (data && data.character && data.character.length > 0) {
@@ -60,7 +68,7 @@ const Main: React.FC<MainProps> = ({ listenMode,loadingMode ,onLoadingTrue,onLoa
 
     return (
         <main className={styles.main}>
-            
+
             <MainCharacter
                 characterData={characterData}
                 listenMode={listenMode}

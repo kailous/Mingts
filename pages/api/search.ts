@@ -111,9 +111,14 @@ async function getHanzBishun(searchWords: string[]) {
 
 // 用于处理 /api/search?zi=... 的请求
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-    // 获取查询参数
-    const {zi} = req.query;
+    if (req.method !== 'POST') {
+        res.status(400).json({ error: 'Only POST requests are allowed' });
+        return;
+    }
+
+    const { zi } = req.body;
     const searchWords = (zi as string).split(' ');
+
     // 尝试获取数据
     try {
         // 获取数据
@@ -122,12 +127,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         if (result) { // 如果 result 不是 undefined
             res.json(result); // 返回 result
         } else { // 如果 result 是 undefined
-            res.status(404).json({Error: `无法获取${zi}的数据`}); // 返回 404
+            res.status(404).json({ Error: `无法获取${zi}的数据` }); // 返回 404
         }
     } catch (error) { // 如果出错
         console.error(`获取${zi}数据时出错: ${error}`); // 打印错误信息
-        res.status(500).json({Error: '内部服务器错误'}); // 返回 500
+        res.status(500).json({ Error: '内部服务器错误' }); // 返回 500
     }
 };
 
 export default handler;
+
