@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import MyHead from "./components/head";
 import Header from "./components/header";
 import Main from "./components/main";
+import Footer from "./components/footer";
 
 const MyPage: React.FC = () => {
     // 创建一个loading状态
@@ -41,6 +42,7 @@ const MyPage: React.FC = () => {
 
     return (
         <>
+
             <MyHead />
 
             <Header
@@ -59,6 +61,7 @@ const MyPage: React.FC = () => {
                 setLoadingMode={setLoadingMode}
 
             />
+            <Footer />
         </>
     );
 };

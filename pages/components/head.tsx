@@ -36,7 +36,7 @@ const MyHead: React.FC = () => {
             {/* 更多社交媒体平台的 meta 标签 */}
 
             {/* 字节图标库 */}
-            <script src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/svg_28472_9.e60c033fea6e5ee20015cc00ec22c0fe.js"
+            <script src="https://lf1-cdn-tos.bytegoofy.com/obj/iconpark/svg_28472_11.6facf12caa31639f6692ddbf8b0102bf.js"
                     async></script>
         </Head>
     );

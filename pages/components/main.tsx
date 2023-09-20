@@ -60,6 +60,7 @@ const Main: React.FC<MainProps> = ({ listenMode,loadingMode ,onLoadingTrue,onLoa
 
     return (
         <main className={styles.main}>
+            
             <MainCharacter
                 characterData={characterData}
                 listenMode={listenMode}
@@ -70,7 +71,9 @@ const Main: React.FC<MainProps> = ({ listenMode,loadingMode ,onLoadingTrue,onLoa
                 listenMode={listenMode}
                 loadingMode={loadingMode}
             />
+
         </main>
+
     );
 };
 

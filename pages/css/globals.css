@@ -21,6 +21,7 @@
     --print-stroke-color: #5b5b5b;
     --text-color: #000000;
     --zuci-button-color: #ffffff;
+    --stack-logo: #7E7E7E;
 }
 
 /* 暗色模式 */
@@ -42,6 +43,7 @@
         --print-stroke-color: #5b5b5b;
         --text-color: #ffffff;
         --zuci-button-color: #5d5d5d;
+        --stack-logo: #7E7E7E;
     }
 }
 
