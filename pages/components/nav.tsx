@@ -7,7 +7,11 @@ interface NavProps {
 // @ts-ignore
 const Navigation: React.FC<NavProps> = ({ textareaContent, listenMode, onListenModeChange }) => {
     const onStudy = () => {
-        window.open(`/?zi=${encodeURIComponent(textareaContent)}`, '_self');
+        if (textareaContent) {
+            window.open(`/?zi=${encodeURIComponent(textareaContent)}`, '_self');
+        } else {
+            alert('请输入要学习的文字内容。');
+        }
     }
 
     const onListen = () => {
