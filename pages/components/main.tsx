@@ -63,7 +63,7 @@ const Main: React.FC<MainProps> = ({ listenMode, loadingMode, onLoadingTrue, onL
                 body: JSON.stringify({ zi }),
             };
 
-            fetchDataWithTimeout(`/api/search`, requestOptions, 10000)  // 发起POST请求
+            fetchDataWithTimeout(`/api/search`, requestOptions, 1000000)  // 发起POST请求
                 .then(data => {
                     if (data && data.character && data.character.length > 0) {
                         setCharacterData(data.character);
