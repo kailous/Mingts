@@ -10,6 +10,7 @@ interface MainProps {
     onLoadingTrue: () => void;
     onLoadingFalse: () => void;
 }
+
 interface WordDataType {
     type: string;
     content: string;
@@ -18,6 +19,7 @@ interface WordDataType {
     listenMode: boolean;
     loadingMode: boolean;  // 新增 loading 属性
 }
+
 interface CharacterDataType {
     type: string;
     gifurl: string;
@@ -27,11 +29,26 @@ interface CharacterDataType {
     listenMode: boolean;
     loadingMode: boolean;   // 新增 loading 属性
 }
-const Main: React.FC<MainProps> = ({ listenMode,loadingMode ,onLoadingTrue,onLoadingFalse}) => {
+
+const fetchDataWithTimeout = (url: string, options: any, timeout: number) => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+    return fetch(url, { ...options, signal: controller.signal })
+        .then(response => {
+            clearTimeout(timeoutId);
+            return response.json();
+        })
+        .catch(error => {
+            clearTimeout(timeoutId);
+            throw error;
+        });
+};
+
+const Main: React.FC<MainProps> = ({ listenMode, loadingMode, onLoadingTrue, onLoadingFalse }) => {
     const router = useRouter();
     const [characterData, setCharacterData] = useState<CharacterDataType[]>([]);
     const [wordData, setWordData] = useState<WordDataType[]>([]);
-
 
     useEffect(() => {
         const { zi } = router.query;
@@ -46,8 +63,7 @@ const Main: React.FC<MainProps> = ({ listenMode,loadingMode ,onLoadingTrue,onLoa
                 body: JSON.stringify({ zi }),
             };
 
-            fetch(`/api/search`, requestOptions)  // 发起POST请求
-                .then(response => response.json())
+            fetchDataWithTimeout(`/api/search`, requestOptions, 10000)  // 发起POST请求
                 .then(data => {
                     if (data && data.character && data.character.length > 0) {
                         setCharacterData(data.character);
