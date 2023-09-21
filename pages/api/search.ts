@@ -32,7 +32,9 @@ async function getHanzBishun(searchWords: string[]) {
             // 获取 HTML 代码
             const response = await axios.get(url, {responseType: 'text'});
             const $ = cheerio.load(response.data);
+            // ------------------------------------------------------------
             // 提取笔顺动画 & 拼音
+            // ------------------------------------------------------------
             const gifUrl = $('#word_bishun').attr('data-gif');
             const pinyinDiv = $('#pinyin');
             const pinyinList = pinyinDiv
@@ -44,9 +46,20 @@ async function getHanzBishun(searchWords: string[]) {
                     const pinyinLink = span.find('a').attr('url');
                     return {pinyin, pinyinLink};
                 });
-
             // ------------------------------------------------------------
-            // [旧代码] // 提取释义
+            // 提取释义
+            // ------------------------------------------------------------
+            const baikeWrapperDiv = $('#basicmean-wrapper');
+            const tabContentDiv = baikeWrapperDiv.find('.tab-content');
+            const tabContentdl = tabContentDiv.find('dl');
+            const tabContentdd = tabContentdl.find('dd');
+            const meanings = tabContentdd
+                .find('p')
+                .toArray()
+                .map((pElement) => $(pElement).text().trim())
+                .join(' ');
+            // ------------------------------------------------------------
+            // 提取备用释义
             // ------------------------------------------------------------
             const baikeWrapperDiv2 = $('#baike-wrapper');
             const tabContentDiv2 = baikeWrapperDiv2.find('.tab-content');
@@ -59,29 +72,18 @@ async function getHanzBishun(searchWords: string[]) {
                 })
                 .join(' ');
             // ------------------------------------------------------------
-
-            // 提取释义
-            const baikeWrapperDiv = $('#basicmean-wrapper');
-            const tabContentDiv = baikeWrapperDiv.find('.tab-content');
-            const tabContentdl = tabContentDiv.find('dl');
-            const tabContentdd = tabContentdl.find('dd');
-            const meanings = tabContentdd
-                .find('p')
-                .toArray()
-                .map((pElement) => $(pElement).text().trim())
-                .join(' ');
             // 提取词组
+            // ------------------------------------------------------------
             const zuciWrapperDiv = $('#zuci-wrapper');
             const zuciTabContentDiv = zuciWrapperDiv.find('.tab-content');
             const linkTerms = zuciTabContentDiv
                 .find('a')
                 .toArray()
-                .map((aElement) => {
-                    return $(aElement).text().trim();
-                });
-            if (linkTerms.length > 0) {
-                linkTerms.pop();
-            }
+                .map((aElement) => $(aElement).text().trim())
+                .filter((term) => term.length === 2 && !term.includes('更多')) // 仅保留2个字的词组且不包含“更多”
+                .slice(0, 10); // 最多10个词组
+            // ------------------------------------------------------------
+
             // 根据内容长度确定类型
             const type = searchWord.length === 1 ? 'character' : 'word';
             // 将数据添加到 results 中
