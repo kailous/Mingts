@@ -2,7 +2,8 @@ div.card {
     display: flex;
     flex: 1 0 calc(50% - 10px); /* 使用 flex 属性自动调整卡片宽度 */
     width: calc(50% - 10px);
-    min-width: 600px;
+    /*min-width: 600px;*/
+    min-width: 560px;
     align-items: flex-start;
     border-radius: var(--card-radius);
     background: var(--card-color);
