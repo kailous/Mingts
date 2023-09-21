@@ -48,16 +48,16 @@ async function getHanzBishun(searchWords: string[]) {
             // ------------------------------------------------------------
             // [旧代码] // 提取释义
             // ------------------------------------------------------------
-            // const baikeWrapperDiv = $('#baike-wrapper');
-            // const tabContentDiv = baikeWrapperDiv.find('.tab-content');
-            // const meanings = tabContentDiv
-            //     .find('p')
-            //     .toArray()
-            //     .map((pElement) => {
-            //         $(pElement).find('a').remove();
-            //         return $(pElement).text().trim();
-            //     })
-            //     .join(' ');
+            const baikeWrapperDiv2 = $('#baike-wrapper');
+            const tabContentDiv2 = baikeWrapperDiv2.find('.tab-content');
+            const meanings2 = tabContentDiv2
+                .find('p')
+                .toArray()
+                .map((pElement) => {
+                    $(pElement).find('a').remove();
+                    return $(pElement).text().trim();
+                })
+                .join(' ');
             // ------------------------------------------------------------
 
             // 提取释义
@@ -95,7 +95,7 @@ async function getHanzBishun(searchWords: string[]) {
                             pinyinLink: item && item.pinyinLink ? item.pinyinLink.trim() : 'none',
                         }))
                         : [{pinyinText: 'none', pinyinLink: 'none'}],
-                defn: meanings || '发现了未知事物，还没有被收录呢。', // Return empty string if meanings is empty
+                defn: meanings || meanings2 || '发现了未知事物，还没有被收录呢。', // Return empty string if meanings is empty
                 gow: linkTerms || ['找不到合适的词组'], // Return an empty array if linkTerms is empty
             };
             // 将 entry 添加到 results 中
