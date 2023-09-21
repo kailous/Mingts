@@ -40,9 +40,10 @@ const CardCharacter: React.FC<CardCharacterProps> = ({ data, listenMode }) => {
         audio.play().then();
     };
 
+    const listenModeStyles = listenMode ? `${styles.card} ${styles.listenMode}` : styles.card;
 
     return (
-        <div className={styles.card}>
+        <div className={listenModeStyles}>
             <div className={styles.bihua}>
                 <div
                     className={isSafari ? styles.safari_img : styles.img}

@@ -41,6 +41,7 @@ div.info {
     align-items: flex-start;
     flex: 1 0 0;
     align-self: stretch;
+    justify-content: space-between;
 }
 ul.pinyin {
     display: flex;
@@ -74,15 +75,6 @@ ul.pinyin button p {
 ul.pinyin button svg {
     width: 14px;
     height: 14px;
-}
-div.info {
-    display: flex;
-    padding: 30px;
-    flex-direction: column;
-    align-items: flex-start;
-    flex: 1 0;
-    align-self: stretch;
-    justify-content: space-between;
 }
 div.info p.shiyi {
     display: -webkit-box;
@@ -126,6 +118,20 @@ div.info ul li {
     font-weight: 400;
     /*line-height: 140%; !* 22.4px *!*/
 }
+
+/* 听写模式 */
+div.listenMode div.info {
+    display:none !important;
+}
+div.listenMode div.bihua {
+    max-width: 100% !important;
+}
+div.listenMode {
+    min-width: 300px;
+    width: calc(25% - 30px);
+    flex: 1 0 calc(25% - 30px);
+}
+
 /*当宽度小于660px时*/
 @media (max-width: 660px) {
     div.card {
