@@ -22,21 +22,39 @@ const CardWord: React.FC<CardWordProps> = ({ data, listenMode }) => {
         return null; // or handle the case where content is not defined
     }
     const { content, pinyin, defn } = data;
+    const audioUrls = pinyin.map((item) => item.pinyinLink).filter((url) => url && url !== 'none');
+    const hasAudio = audioUrls.length > 0;
 
     // Function to play audio
-    const playAudio = () => {
-        const audio = new Audio(pinyin[0].pinyinLink);
-        audio.play().then();
+    const playAudio = async () => {
+        if (!hasAudio) {
+            return;
+        }
+
+        for (const audioUrl of audioUrls) {
+            const audio = new Audio(audioUrl);
+            await new Promise<void>((resolve) => {
+                audio.onended = () => resolve();
+                audio.onerror = () => resolve();
+                audio.play().catch(() => resolve());
+            });
+        }
     }
 
     return (
-        <div className={styles.card}>
+        <div
+            className={hasAudio ? `${styles.card} ${styles.clickable}` : styles.card}
+            onClick={playAudio}
+        >
             <h1>{listenMode ? '******' : content}</h1>
             <div className={styles.info}>
                 <div className={styles.pinyin}>
                     <h2>{pinyin[0].pinyinText}</h2>
-                    {pinyin[0].pinyinText !== 'none' && (
-                        <button onClick={playAudio}>
+                    {hasAudio && (
+                        <button onClick={(event) => {
+                            event.stopPropagation();
+                            playAudio();
+                        }}>
                             <svg className="iconpark-icon">
                                 <use href="#play"></use>
                             </svg>

@@ -15,6 +15,22 @@ const Header = ({ onListen,listenMode,setListenMode }) => {
         setTextareaContent(event.target.value);
     };
 
+    const handleStudy = () => {
+        if (textareaContent) {
+            window.open(`/?zi=${encodeURIComponent(textareaContent)}`, '_self');
+        } else {
+            alert('请输入要学习的文字内容。');
+        }
+    }
+
+    // @ts-ignore
+    const handleTextareaKeyDown = (event) => {
+        if (event.metaKey && event.key === 'Enter') {
+            event.preventDefault();
+            handleStudy();
+        }
+    };
+
     // @ts-ignore
     return (
         <div className={styles.header}>
@@ -28,6 +44,7 @@ const Header = ({ onListen,listenMode,setListenMode }) => {
                 placeholder="在此输入需要学习的字或者词组&#13;&#10;用空格分开"
                 value={textareaContent}
                 onChange={handleTextareaChange}
+                onKeyDown={handleTextareaKeyDown}
                 style={{ display: listenMode ? 'none' : 'block' }}
             />
             <Navigation
@@ -36,6 +53,7 @@ const Header = ({ onListen,listenMode,setListenMode }) => {
                 listenMode={listenMode}
                 textareaContent={textareaContent}
                 onListenModeChange={handleListenModeChange}
+                onStudy={handleStudy}
             />
         </div>
     );

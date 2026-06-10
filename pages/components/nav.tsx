@@ -2,18 +2,11 @@ import React from 'react';
 import styles from '../css/nav.module.css';
 
 interface NavProps {
-    textareaContent: any;
+    listenMode: boolean;
+    onListenModeChange: (mode: boolean) => void;
+    onStudy: () => void;
 }
-// @ts-ignore
-const Navigation: React.FC<NavProps> = ({ textareaContent, listenMode, onListenModeChange }) => {
-    const onStudy = () => {
-        if (textareaContent) {
-            window.open(`/?zi=${encodeURIComponent(textareaContent)}`, '_self');
-        } else {
-            alert('请输入要学习的文字内容。');
-        }
-    }
-
+const Navigation: React.FC<NavProps> = ({ listenMode, onListenModeChange, onStudy }) => {
     const onListen = () => {
         // Toggle listenMode on button click
         onListenModeChange(!listenMode);

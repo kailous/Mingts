@@ -10,6 +10,9 @@ div.card {
     border-radius: var(--card-radius);
     background: var(--card-color);
 }
+div.card.clickable {
+    cursor: pointer;
+}
 div.card h1 {
     color: var(--text-color);
     font-size: 32px;

@@ -6,7 +6,7 @@
 // 引入依赖
 import {NextApiRequest, NextApiResponse} from 'next';
 import axios from 'axios';
-import cheerio from 'cheerio';
+import { pinyin } from 'pinyin';
 
 // 先定义好数据的类型结构
 interface Entry {
@@ -17,7 +17,106 @@ interface Entry {
     gow: string[]; // 词组
 }
 
-// 用于获取数据
+type BaiduArrayValue = string[] | string | null | undefined;
+
+interface BaiduWordDetail {
+    stroke_order_gif?: string | null;
+    comprehensive_definition?: {
+        pinyin?: BaiduArrayValue;
+        voice?: BaiduArrayValue;
+        definition?: BaiduArrayValue;
+        new_definition?: BaiduArrayValue;
+        related_term?: BaiduArrayValue;
+    }[] | null;
+    zuci_list?: { name?: BaiduArrayValue }[] | null;
+}
+
+const DEFAULT_GIF = './dictation_bihua.png';
+
+const firstText = (value: BaiduArrayValue): string => {
+    if (Array.isArray(value)) {
+        return value.find(Boolean)?.trim() || '';
+    }
+
+    return value?.trim() || '';
+};
+
+const toTextList = (value: BaiduArrayValue): string[] => {
+    if (Array.isArray(value)) {
+        return value.map((item) => item.trim()).filter(Boolean);
+    }
+
+    return value ? [value.trim()] : [];
+};
+
+const buildWordPinyin = (word: string) => {
+    const pinyinText = pinyin(word).flat().join(' ');
+    const pinyinAudioNames = pinyin(word, { style: 2 }).flat();
+
+    return (pinyinText.split(' ').map((text, index) => ({
+        pinyinText: index === 0 ? pinyinText : text,
+        pinyinLink: pinyinAudioNames[index]
+            ? `https://hanyu-word-pinyin-short.cdn.bcebos.com/${pinyinAudioNames[index]}.mp3`
+            : 'none',
+    }))).filter((item) => item.pinyinText) || [{pinyinText: 'none', pinyinLink: 'none'}];
+};
+
+async function getBaiduWordDetail(searchWord: string): Promise<BaiduWordDetail | null> {
+    const response = await axios.get('https://hanyuapp.baidu.com/dictapp/word/detail_getzuci', {
+        params: {
+            wd: searchWord,
+            client: 'pc',
+        },
+        timeout: 15000,
+        responseType: 'json',
+    });
+
+    if (response.data?.errno !== 0) {
+        throw new Error(response.data?.errmsg || '百度汉语接口返回异常');
+    }
+
+    return response.data?.data?.detail || null;
+}
+
+function buildCharacterEntry(searchWord: string, detail: BaiduWordDetail | null): Entry {
+    const definitions =
+        detail?.comprehensive_definition
+            ?.flatMap((item) => toTextList(item.definition).length > 0 ? toTextList(item.definition) : toTextList(item.new_definition))
+            .filter(Boolean) || [];
+
+    const pinyinList =
+        detail?.comprehensive_definition
+            ?.map((item) => ({
+                pinyinText: firstText(item.pinyin) || 'none',
+                pinyinLink: firstText(item.voice) || 'none',
+            }))
+            .filter((item) => item.pinyinText !== 'none') || [];
+
+    const zuciList =
+        detail?.zuci_list
+            ?.map((item) => firstText(item.name))
+            .filter((term) => term.length === 2)
+            .slice(0, 10) || [];
+
+    return {
+        content: searchWord || '没有收录',
+        gifurl: detail?.stroke_order_gif || DEFAULT_GIF,
+        pinyin: pinyinList.length > 0 ? pinyinList : [{pinyinText: 'none', pinyinLink: 'none'}],
+        defn: definitions.join(' ') || '发现了未知事物，还没有被收录呢。',
+        gow: zuciList.length > 0 ? zuciList : ['找不到合适的词组'],
+    };
+}
+
+function buildTermEntry(searchWord: string): Entry {
+    return {
+        content: searchWord || '没有收录',
+        gifurl: DEFAULT_GIF,
+        pinyin: buildWordPinyin(searchWord),
+        defn: '这个词暂时没有拿到释义，可以先作为听写词练习。',
+        gow: [],
+    };
+}
+
 async function getHanzBishun(searchWords: string[]) {
     const results = {
         // 用于存放结果
@@ -26,85 +125,21 @@ async function getHanzBishun(searchWords: string[]) {
     };
 
     for (const searchWord of searchWords) {
-        const url = `https://hanyu.baidu.com/s?wd=${searchWord}&cf=rcmd&t=img&ptype=zici`;
-        // 尝试获取数据
-        try {
-            // 获取 HTML 代码
-            const response = await axios.get(url, {responseType: 'text'});
-            const $ = cheerio.load(response.data);
-            // ------------------------------------------------------------
-            // 提取笔顺动画 & 拼音
-            // ------------------------------------------------------------
-            const gifUrl = $('#word_bishun').attr('data-gif');
-            const pinyinDiv = $('#pinyin');
-            const pinyinList = pinyinDiv
-                .find('span')
-                .toArray()
-                .map((spanElement) => {
-                    const span = $(spanElement);
-                    const pinyin = span.text().trim().replace(/[\[\]]/g, ''); // 删除 '[' 和 ']'
-                    const pinyinLink = span.find('a').attr('url');
-                    return {pinyin, pinyinLink};
-                });
-            // ------------------------------------------------------------
-            // 提取释义
-            // ------------------------------------------------------------
-            const baikeWrapperDiv = $('#basicmean-wrapper');
-            const tabContentDiv = baikeWrapperDiv.find('.tab-content');
-            const tabContentdl = tabContentDiv.find('dl');
-            const tabContentdd = tabContentdl.find('dd');
-            const meanings = tabContentdd
-                .find('p')
-                .toArray()
-                .map((pElement) => $(pElement).text().trim())
-                .join(' ');
-            // ------------------------------------------------------------
-            // 提取备用释义
-            // ------------------------------------------------------------
-            const baikeWrapperDiv2 = $('#baike-wrapper');
-            const tabContentDiv2 = baikeWrapperDiv2.find('.tab-content');
-            const meanings2 = tabContentDiv2
-                .find('p')
-                .toArray()
-                .map((pElement) => {
-                    $(pElement).find('a').remove();
-                    return $(pElement).text().trim();
-                })
-                .join(' ');
-            // ------------------------------------------------------------
-            // 提取词组
-            // ------------------------------------------------------------
-            const zuciWrapperDiv = $('#zuci-wrapper');
-            const zuciTabContentDiv = zuciWrapperDiv.find('.tab-content');
-            const linkTerms = zuciTabContentDiv
-                .find('a')
-                .toArray()
-                .map((aElement) => $(aElement).text().trim())
-                .filter((term) => term.length === 2 && !term.includes('更多')) // 仅保留2个字的词组且不包含“更多”
-                .slice(0, 10); // 最多10个词组
-            // ------------------------------------------------------------
+        if (!searchWord) {
+            continue;
+        }
 
-            // 根据内容长度确定类型
-            const type = searchWord.length === 1 ? 'character' : 'word';
-            // 将数据添加到 results 中
-            const entry: Entry = { // 使用 Entry 类型
-                content: searchWord || '没有收录',
-                gifurl: gifUrl || './dictation_bihua.png',
-                pinyin:
-                    pinyinList && pinyinList.length > 0
-                        ? pinyinList.map((item) => ({
-                            pinyinText: item && item.pinyin ? item.pinyin.trim() : 'none',
-                            pinyinLink: item && item.pinyinLink ? item.pinyinLink.trim() : 'none',
-                        }))
-                        : [{pinyinText: 'none', pinyinLink: 'none'}],
-                defn: meanings || meanings2 || '发现了未知事物，还没有被收录呢。', // Return empty string if meanings is empty
-                gow: linkTerms || ['找不到合适的词组'], // Return an empty array if linkTerms is empty
-            };
-            // 将 entry 添加到 results 中
-            results[type].push(entry);
+        try {
+            if (searchWord.length === 1) {
+                const detail = await getBaiduWordDetail(searchWord);
+                results.character.push(buildCharacterEntry(searchWord, detail));
+            } else {
+                results.word.push(buildTermEntry(searchWord));
+            }
         } catch (error) {
-            // 有可能是网络问题，或者是服务器问题...
             console.error(`获取${searchWord}数据时出错: ${error}`);
+            const fallback = searchWord.length === 1 ? buildCharacterEntry(searchWord, null) : buildTermEntry(searchWord);
+            results[searchWord.length === 1 ? 'character' : 'word'].push(fallback);
         }
     }
     // 返回结果
@@ -119,7 +154,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 
     const { zi } = req.body;
-    const searchWords = (zi as string).split(' ');
+    const searchWords = String(zi || '').split(/\s+/).filter(Boolean);
 
     // 尝试获取数据
     try {
@@ -138,4 +173,3 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
 };
 
 export default handler;
-
