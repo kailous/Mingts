@@ -6,7 +6,6 @@
 // 引入依赖
 import {NextApiRequest, NextApiResponse} from 'next';
 import axios from 'axios';
-import { pinyin } from 'pinyin';
 
 // 先定义好数据的类型结构
 interface Entry {
@@ -47,18 +46,6 @@ const toTextList = (value: BaiduArrayValue): string[] => {
     }
 
     return value ? [value.trim()] : [];
-};
-
-const buildWordPinyin = (word: string) => {
-    const pinyinText = pinyin(word).flat().join(' ');
-    const pinyinAudioNames = pinyin(word, { style: 2 }).flat();
-
-    return (pinyinText.split(' ').map((text, index) => ({
-        pinyinText: index === 0 ? pinyinText : text,
-        pinyinLink: pinyinAudioNames[index]
-            ? `https://hanyu-word-pinyin-short.cdn.bcebos.com/${pinyinAudioNames[index]}.mp3`
-            : 'none',
-    }))).filter((item) => item.pinyinText) || [{pinyinText: 'none', pinyinLink: 'none'}];
 };
 
 async function getBaiduWordDetail(searchWord: string): Promise<BaiduWordDetail | null> {
@@ -107,11 +94,37 @@ function buildCharacterEntry(searchWord: string, detail: BaiduWordDetail | null)
     };
 }
 
-function buildTermEntry(searchWord: string): Entry {
+async function buildTermEntry(searchWord: string): Promise<Entry> {
+    const pinyinItems = await Promise.all(
+        Array.from(searchWord).map(async (character) => {
+            try {
+                const detail = await getBaiduWordDetail(character);
+                const definition = detail?.comprehensive_definition?.[0];
+
+                return {
+                    pinyinText: firstText(definition?.pinyin) || character,
+                    pinyinLink: firstText(definition?.voice) || 'none',
+                };
+            } catch (error) {
+                console.error(`获取${character}拼音时出错: ${error}`);
+
+                return {
+                    pinyinText: character,
+                    pinyinLink: 'none',
+                };
+            }
+        })
+    );
+    const pinyinText = pinyinItems.map((item) => item.pinyinText).join(' ');
+    const pinyinList = pinyinItems.map((item, index) => ({
+        pinyinText: index === 0 ? pinyinText : item.pinyinText,
+        pinyinLink: item.pinyinLink,
+    }));
+
     return {
         content: searchWord || '没有收录',
         gifurl: DEFAULT_GIF,
-        pinyin: buildWordPinyin(searchWord),
+        pinyin: pinyinList.length > 0 ? pinyinList : [{pinyinText: 'none', pinyinLink: 'none'}],
         defn: '这个词暂时没有拿到释义，可以先作为听写词练习。',
         gow: [],
     };
@@ -134,11 +147,11 @@ async function getHanzBishun(searchWords: string[]) {
                 const detail = await getBaiduWordDetail(searchWord);
                 results.character.push(buildCharacterEntry(searchWord, detail));
             } else {
-                results.word.push(buildTermEntry(searchWord));
+                results.word.push(await buildTermEntry(searchWord));
             }
         } catch (error) {
             console.error(`获取${searchWord}数据时出错: ${error}`);
-            const fallback = searchWord.length === 1 ? buildCharacterEntry(searchWord, null) : buildTermEntry(searchWord);
+            const fallback = searchWord.length === 1 ? buildCharacterEntry(searchWord, null) : await buildTermEntry(searchWord);
             results[searchWord.length === 1 ? 'character' : 'word'].push(fallback);
         }
     }
